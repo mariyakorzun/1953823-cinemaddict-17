@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
 * Студент: [Мария Корзун](https://up.htmlacademy.ru/ecmascript/17/user/1953823).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Карпов](https://up.htmlacademy.ru/ecmascript/17/user/518893).
 
 ---
 
