@@ -6,21 +6,21 @@ import ShowMoreButtonView from '../view/show-more-button-view.js';
 import {render} from '../render.js';
 
 export default class FilmsPresenter {
-   filmsComponent = new FilmsView();
-   filmsListComponent = new FilmsListView();
-   filmsListContainerComponent = new FilmsListContainerView();
+  filmsComponent = new FilmsView();
+  filmsListComponent = new FilmsListView();
+  filmsListContainerComponent = new FilmsListContainerView();
 
-   init = (filmsContainer) => {
-     this.filmsContainer = filmsContainer;
+  init = (filmsContainer) => {
+    this.filmsContainer = filmsContainer;
 
-     render(this.filmsComponent, this.filmsContainer);
-     render(this.filmsListComponent, this.filmsComponent.getElement());
-     render(this.filmsListContainerComponent, this.filmsListComponent.getElement());
+    render(this.filmsComponent, this.filmsContainer);
+    render(this.filmsListComponent, this.filmsComponent.getElement());
+    render(this.filmsListContainerComponent, this.filmsListComponent.getElement());
 
-     for (let i = 0; i < 5; i++) {
-       render(new FilmCardView(), this.filmsListContainerComponent.getElement());
-     }
+    for (let i = 0; i < 5; i++) {
+     render(new FilmCardView(), this.filmsListContainerComponent.getElement());
+   }
 
-     render(new ShowMoreButtonView(), this.filmsListComponent.getElement());
-   };
- }
+   render(new ShowMoreButtonView(), this.filmsListComponent.getElement());
+  };
+}
