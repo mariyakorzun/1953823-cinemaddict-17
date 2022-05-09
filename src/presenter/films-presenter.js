@@ -1,4 +1,3 @@
-import FilmsView from '../view/films-view.js';
 import FilterView from '../view/filter-view.js';
 import FilmsListView from '../view/films-list-view.js';
 import FilmsListContainerView from '../view/films-list-container-view.js';
