@@ -1,15 +1,24 @@
-import {getRandomInteger, getRandomDate, humanizeFilmRuntime} from '../utils.js';
-import {faker} from '@faker-js/faker';
+import {getRandomInteger, getRandomDate, humanizeFilmRuntime, getRandomArrayElement} from '../utils.js';
 
-const POSTERS = new Map([
-  ['Made for each other', 'made-for-each-other.png'],
-  ['Popeye meets sinbad', 'popeye-meets-sinbad.png'],
-  ['Sagebrush trail', 'sagebrush-trail.jpg'],
-  ['Santa claus conquers the martians', 'santa-claus-conquers-the-martians.jpg'],
-  ['The dance of life', 'the-dance-of-life.jpg'],
-  ['The great flamarion', 'the-great-flamarion.jpg'],
-  ['The man with the golden arm', 'the-man-with-the-golden-arm.jpg']
-]);
+const FILM_TITLES = [
+  'Made for each other',
+  'Popeye meets sinbad',
+  'Sagebrush trail',
+  'Santa claus conquers the martians',
+  'The dance of life',
+  'The great flamarion',
+  'The man with the golden arm'
+];
+
+const FILM_POSTERS = [
+  'made-for-each-other.png',
+  'popeye-meets-sinbad.png',
+  'sagebrush-trail.jpg',
+  'santa-claus-conquers-the-martians.jpg',
+  'the-dance-of-life.jpg',
+  'the-great-flamarion.jpg',
+  'the-man-with-the-golden-arm.jpg'
+];
 
 const GENRES = [
   'Action',
@@ -52,14 +61,19 @@ const NAMES = [
   'John Wayne'
 ];
 
-const getRandomName = () => {
-  const keys = Array.from(POSTERS.keys());
-  return keys[getRandomInteger(0, keys.length - 1)];
-};
-
-const getRandomDescription = () => (
-  Array.from({ length: getRandomInteger(1, 5) }, faker.lorem.sentence).join(' ')
-);
+const DESCRIPTIONS = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Cras aliquet varius magna, non porta ligula feugiat eget.',
+  'Fusce tristique felis at fermentum pharetra.',
+  'Aliquam id orci ut lectus varius viverra.',
+  'Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.',
+  'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.',
+  'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.',
+  'Sed sed nisi sed augue convallis suscipit in sed felis.',
+  'Aliquam erat volutpat.',
+  'Nunc fermentum tortor ac porta dapibus.',
+  'In rutrum ac purus sit amet tempus.'
+];
 
 const getRandomPeopleList = () => {
   const people = [];
@@ -78,30 +92,33 @@ const getRandomRuntime = () => {
 const getRandomGenres = () => {
   const genres = [];
   for (let i = 0; i < 3; i++) {
-    genres.push(GENRES[getRandomInteger(0, GENRES.length - 1)]);
+    const genre = GENRES[getRandomInteger(0, GENRES.length - 1)];
+    if (!genres.includes(genre)) {
+      genres.push(genre);
+    }
   }
   return genres;
 };
 
 export const generateFilm = (id) => {
-  const filmTitle = getRandomName();
+  const filmTitle = getRandomArrayElement(FILM_TITLES);
   return (
     {
       id: id,
       title: filmTitle,
       originalTitle: filmTitle,
-      poster: POSTERS.get(filmTitle),
+      poster: getRandomArrayElement(FILM_POSTERS),
       rating: `${getRandomInteger(1, 9)}.${getRandomInteger(1, 9)}`,
       releaseDate: getRandomDate(1940, 2022),
       runtime: getRandomRuntime(),
       genres: new Set(getRandomGenres()),
-      description: getRandomDescription(),
+      description: getRandomArrayElement(DESCRIPTIONS),
       commentsCount: getRandomInteger(0, 20),
       director: NAMES[getRandomInteger(0, NAMES.length - 1)],
       writers: new Set(getRandomPeopleList()),
       actors: new Set(getRandomPeopleList()),
-      country: COUNTRIES[getRandomInteger(0, COUNTRIES.length - 1)],
-      ageRestriction: AGE_RESTRICTIONS[getRandomInteger(0, AGE_RESTRICTIONS.length -1)]
+      country: getRandomArrayElement(COUNTRIES),
+      ageRestriction: getRandomArrayElement(AGE_RESTRICTIONS),
     }
   );
 };
