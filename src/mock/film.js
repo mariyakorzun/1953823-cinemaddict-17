@@ -38,8 +38,7 @@ const GENRES = [
 const AGE_RESTRICTIONS = [
   '0+',
   '3+',
-  '18+',
-  'NaN+'
+  '18+'
 ];
 
 const COUNTRIES = [
