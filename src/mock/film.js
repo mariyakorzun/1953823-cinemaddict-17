@@ -55,7 +55,7 @@ const NAMES = [
   'Heinz Herald',
   'Richard Weil',
   'Erich von Stroheim',
-  'Mary Beth Hughes',
+  'Mary BethHughes',
   'Dan Duryea',
   'John Wayne'
 ];

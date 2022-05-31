@@ -29,8 +29,9 @@ const createFilmCardTemplate = (film) => (
 );
 
 export default class FilmCardView extends BaseTemplateView {
+  #film = null;
   constructor(film) {
     super(createFilmCardTemplate(film));
-    this.film = film;
+    this.#film = film;
   }
 }

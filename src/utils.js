@@ -28,4 +28,20 @@ const getRandomPositiveInteger = (a, b) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
-export {getRandomInteger, getRandomDate, humanizeFilmRuntime, humanizeFilmReleaseDate, humanizeFilmCommentDate, getRandomArrayElement};
+const listToMap = (list, keyGetter) => {
+  const map = new Map();
+  list.forEach((item) => {
+    map.set(keyGetter(item), item);
+  });
+  return map;
+};
+
+const mapValuesToList = (map) => (
+  Array.from(map.values())
+);
+
+const isEscapeKey = (evt) => (
+  evt.key === 'Escape'
+);
+
+export {getRandomInteger, getRandomDate, humanizeFilmRuntime, humanizeFilmReleaseDate, humanizeFilmCommentDate, getRandomArrayElement, listToMap, mapValuesToList, isEscapeKey};
