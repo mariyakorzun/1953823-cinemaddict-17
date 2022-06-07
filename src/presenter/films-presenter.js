@@ -5,8 +5,12 @@ import FilmsListContainerView from '../view/films-list-container-view.js';
 import FilmDetailsPopupView from '../view/popup-view';
 import FilmCardView from '../view/film-card-view.js';
 import ShowMoreBtnView from '../view/show-more-button-view.js';
-import {render} from '../render.js';
-import {listToMap, mapValuesToList, isEscapeKey} from '../utils.js';
+import { render } from '../render.js';
+import {
+  listToMap,
+  mapValuesToList,
+  isEscapeKey,
+} from '../utils.js';
 
 export default class FilmsPresenter {
   #filmListView = new FilmsListView();
