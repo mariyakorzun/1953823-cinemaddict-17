@@ -1,19 +1,28 @@
-import {generateFilm} from '../mock/film';
-import {genarateRandomComments} from '../mock/comment';
+import {generateFilm} from '../mock/film.js';
+import {generateRandomComments} from '../mock/comment.js';
 
 export default class FilmModel {
 
+  #films = Array.from({ length: 22 }, (elem, i) => generateFilm(i.toString()));
+  #commentsByFilmId = new Map();
+
   constructor() {
-    this.films = Array.from({ length: 5 }, (elem, i) => generateFilm(i));
-    this.commentsByFilmId = new Map();
-    this.films.forEach((film) => {
+    this.#films.forEach((film) => {
       for (let i = 0; i < film.commentsCount; i++) {
-        this.commentsByFilmId.set(film.id, genarateRandomComments(film.commentsCount, film.id));
+        this.#commentsByFilmId.set(film.id, generateRandomComments(film.commentsCount, film.id));
       }
     });
   }
 
-  getFilms = () => this.films;
+  get films() {
+    return this.#films;
+  }
 
-  getComments = () => this.commentsByFilmId;
+  getCommentsByFilmId(filmId) {
+    const comments = this.#commentsByFilmId.get(filmId);
+    if (comments) {
+      return comments;
+    }
+    return [];
+  }
 }

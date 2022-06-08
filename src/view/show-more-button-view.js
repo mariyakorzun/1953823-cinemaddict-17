@@ -1,21 +1,10 @@
-import {createElement} from '../render.js';
+import BaseTemplateView from './base-template-view.js';
 
-const createShowMoreButtonTemplate = () => '<button class="films-list__show-more">Show more</button>';
+const showMoreBtnTemplate = '<button class="films-list__show-more">Show more</button>';
 
-export default class ShowMoreButtonView {
-  getTemplate() {
-    return createShowMoreButtonTemplate;
-  }
+export default class ShowMoreBtnView extends BaseTemplateView {
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  constructor() {
+    super(showMoreBtnTemplate);
   }
 }
