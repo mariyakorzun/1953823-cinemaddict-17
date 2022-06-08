@@ -1,4 +1,7 @@
-import {getRandomInteger, getRandomDate, getRandomArrayElement} from '../utils.js';
+import {
+  getRandomDate,
+  getRandomArrayElement,
+} from '../utils.js';
 
 const EMOJIS = [
   'smile',
@@ -35,21 +38,16 @@ const COMMENTS = [
   'In rutrum ac purus sit amet tempus.'
 ];
 
-const text = getRandomArrayElement(COMMENTS),
-  emoji = EMOJIS[getRandomInteger(0, EMOJIS.length - 1)],
-  author = NAMES[getRandomInteger(0, NAMES.length - 1)],
-  date = getRandomDate(2000, 2022);
-
 const generateComment = (filmId) => ({
-  text: text,
-  emoji: emoji,
-  author: author,
-  date: date,
-  filmId: filmId
+  text: getRandomArrayElement(COMMENTS),
+  emoji: getRandomArrayElement(EMOJIS),
+  author: getRandomArrayElement(NAMES),
+  date: getRandomDate(2000, 2022),
+  filmId
 });
 
 const generateRandomComments = (count, filmId) => (
   Array.from({length: count}, () => generateComment(filmId))
 );
 
-export {generateRandomComments};
+export { generateRandomComments };

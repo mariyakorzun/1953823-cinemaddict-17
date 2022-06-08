@@ -6,9 +6,12 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-const humanizeFilmRuntime = (runtimeDate) => dayjs(runtimeDate).format('H[h] m[m]');
-const humanizeFilmReleaseDate = (releaseDate) => dayjs(releaseDate).format('D MMMM YYYY');
-const humanizeFilmCommentDate = (commentDate) => dayjs(commentDate).format('YYYY/MM/DD HH:MM');
+const humanizeFilmRuntime = (runtimeDate) => dayjs(runtimeDate)
+  .format('H[h] m[m]');
+const humanizeFilmReleaseDate = (releaseDate) => dayjs(releaseDate)
+  .format('D MMMM YYYY');
+const humanizeFilmCommentDate = (commentDate) => dayjs(commentDate)
+  .format('YYYY/MM/DD HH:MM');
 
 const getRandomDate = (minYear, maxYear) => {
   const date = new Date();
@@ -26,7 +29,17 @@ const getRandomPositiveInteger = (a, b) => {
   return Math.floor(result);
 };
 
-const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
+const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(
+  0, elements.length - 1
+)];
+
+function makeRandomArray() {
+  return Math.random() - 0.5;
+}
+
+const getRandomArrayElements = (elements, length) => [...elements]
+  .sort(makeRandomArray)
+  .splice(0, length - 1);
 
 const listToMap = (list, keyGetter) => {
   const map = new Map();
@@ -44,4 +57,15 @@ const isEscapeKey = (evt) => (
   evt.key === 'Escape'
 );
 
-export {getRandomInteger, getRandomDate, humanizeFilmRuntime, humanizeFilmReleaseDate, humanizeFilmCommentDate, getRandomArrayElement, listToMap, mapValuesToList, isEscapeKey};
+export {
+  getRandomInteger,
+  getRandomDate,
+  humanizeFilmRuntime,
+  humanizeFilmReleaseDate,
+  humanizeFilmCommentDate,
+  getRandomArrayElement,
+  getRandomArrayElements,
+  listToMap,
+  mapValuesToList,
+  isEscapeKey,
+};

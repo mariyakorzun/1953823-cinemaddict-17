@@ -1,5 +1,9 @@
 import BaseTemplateView from './base-template-view.js';
-import {humanizeFilmReleaseDate, humanizeFilmCommentDate} from '../utils.js';
+import {
+  humanizeFilmReleaseDate,
+  humanizeFilmCommentDate
+} from '../utils.js';
+
 const getGenres = (film) => (
   Array.from(film.genres).map((genre) => `<span class="film-details__genre">${genre}</span>`).join('')
 );
@@ -49,7 +53,7 @@ const getFilmDetailsPopupTemplate = (film, comments) => (`
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Writers</td>
-                //<td class="film-details__cell">${Array.from(film.writers).join(' ')}</td>
+                <td class="film-details__cell">${Array.from(film.writers).join(' ')}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Actors</td>

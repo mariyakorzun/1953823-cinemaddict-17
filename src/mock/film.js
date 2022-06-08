@@ -1,4 +1,10 @@
-import {getRandomInteger, getRandomDate, humanizeFilmRuntime, getRandomArrayElement} from '../utils.js';
+import {
+  getRandomInteger,
+  getRandomDate,
+  humanizeFilmRuntime,
+  getRandomArrayElement,
+  getRandomArrayElements,
+} from '../utils.js';
 
 const FILM_TITLES = [
   'Made for each other',
@@ -50,14 +56,14 @@ const COUNTRIES = [
 ];
 
 const NAMES = [
-  'Anthony Mann',
-  'Anne Wigton',
-  'Heinz Herald',
-  'Richard Weil',
-  'Erich von Stroheim',
-  'Mary BethHughes',
-  'Dan Duryea',
-  'John Wayne'
+  'Bethany',
+  'Alice',
+  'Jessica',
+  'Amelia',
+  'Poppy',
+  'Grace',
+  'Ella',
+  'Scarlett'
 ];
 
 const DESCRIPTIONS = [
@@ -73,14 +79,6 @@ const DESCRIPTIONS = [
   'Nunc fermentum tortor ac porta dapibus.',
   'In rutrum ac purus sit amet tempus.'
 ];
-
-const getRandomPeopleList = () => {
-  const people = [];
-  for (let i = 0; i < getRandomInteger(1, 3); i++) {
-    people.push(NAMES[getRandomInteger(0, NAMES.length - 1)]);
-  }
-  return people;
-};
 
 const getRandomRuntime = () => {
   const date = new Date();
@@ -114,8 +112,8 @@ export const generateFilm = (id) => {
       description: getRandomArrayElement(DESCRIPTIONS),
       commentsCount: getRandomInteger(0, 20),
       director: NAMES[getRandomInteger(0, NAMES.length - 1)],
-      writers: new Set(getRandomPeopleList()),
-      actors: new Set(getRandomPeopleList()),
+      writers: new Set(getRandomArrayElements(NAMES, 3)),
+      actors: new Set(getRandomArrayElements(NAMES, 3)),
       country: getRandomArrayElement(COUNTRIES),
       ageRestriction: getRandomArrayElement(AGE_RESTRICTIONS),
     }
