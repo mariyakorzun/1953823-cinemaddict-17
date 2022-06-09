@@ -1,14 +1,13 @@
 import FilterView from '../view/filter-view.js';
 import FilmsListView from '../view/films-list-view.js';
 import SortView from '../view/sort-view.js';
-import FilmsListContainerView from '../view/films-list-container-view.js';
 import FilmDetailsPopupView from '../view/popup-view';
 import FilmCardView from '../view/film-card-view.js';
 import ShowMoreBtnView from '../view/show-more-button-view.js';
 import {
   render,
   RenderPosition,
-} from '../render.js';
+} from '../framework/render.js';
 import {
   listToMap,
   mapValuesToList,
@@ -19,7 +18,6 @@ const MAX_FILMS_COUNT_AT_ONCE = 5;
 
 export default class FilmsPresenter {
   #filmListView = new FilmsListView();
-  #filmListContainerView = new FilmsListContainerView();
   #showMoreBtnView = new ShowMoreBtnView();
   #filterView = new FilterView();
   #renderedFilmsCount = 0;
@@ -36,18 +34,11 @@ export default class FilmsPresenter {
   };
 
   #renderFilmCardList() {
-    const onCardsListClick = (evt) => {
-      const cardElement = FilmDetailsPopupView.getCardElementByLinkChildElement(evt.target);
-      if (cardElement) {
-        this.#openPopup(cardElement);
-      }
-    };
-    this.#filmListView.element.addEventListener('click', onCardsListClick);
+    this.#filmListView.setFilmCardClickHandler((filmCard) => this.#openPopup(filmCard));
     render(this.#filmListView, this.#container);
-    render(this.#filmListContainerView, this.#filmListView.element);
     const filmsByIdValues = mapValuesToList(this.#filmsById);
     if (filmsByIdValues.length > MAX_FILMS_COUNT_AT_ONCE) {
-      this.#showMoreBtnView.element.addEventListener('click', () => this.#onShowMoreBtnClick(filmsByIdValues));
+      this.#showMoreBtnView.setClickHandler(() => this.#onShowMoreBtnClick(filmsByIdValues));
       render(this.#showMoreBtnView, this.#container);
     }
     if (filmsByIdValues.length > 0) {
@@ -59,9 +50,7 @@ export default class FilmsPresenter {
   }
 
   #renderFilmCard = (film, filmContainerElement) => {
-    const filmCardComponent = new FilmCardView(film);
-    filmCardComponent.element.dataset.id = film.id;
-    render(filmCardComponent, filmContainerElement);
+    render(new FilmCardView(film), filmContainerElement);
   };
 
   #openPopup(cardElement) {
@@ -77,7 +66,7 @@ export default class FilmsPresenter {
       'keydown',
       document.escKeyDownEvt = (evt) => onPageKeyDown(evt)
     );
-    filmDetailPopupComponent.closeBtnElement.addEventListener('click', this.#closePopup);
+    filmDetailPopupComponent.setCloseBtnClickHandler(() => this.#closePopup());
     document.body.classList.add('hide-overflow');
     document.body.appendChild(filmDetailPopupComponent.element);
   }
@@ -91,7 +80,7 @@ export default class FilmsPresenter {
   #onShowMoreBtnClick = (films) => {
     const maxPossibleCount = Math.min(films.length, this.#renderedFilmsCount + MAX_FILMS_COUNT_AT_ONCE);
     for (let i = this.#renderedFilmsCount; i < maxPossibleCount; i++) {
-      this.#renderFilmCard(films[i], this.#filmListContainerView.element);
+      this.#renderFilmCard(films[i], this.#filmListView.filmListContainer);
       this.#renderedFilmsCount++;
     }
     if (this.#renderedFilmsCount === films.length) {

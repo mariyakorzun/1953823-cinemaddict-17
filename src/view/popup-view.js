@@ -1,4 +1,4 @@
-import BaseTemplateView from './base-template-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {
   humanizeFilmReleaseDate,
   humanizeFilmCommentDate
@@ -125,24 +125,29 @@ const getFilmDetailsPopupTemplate = (film, comments) => (`
   </section>
 `);
 
-export default class FilmDetailsPopupView extends BaseTemplateView {
-  constructor(film, comments) {
-    super(getFilmDetailsPopupTemplate(film, comments));
-  }
+export default class FilmDetailsPopupView extends AbstractView {
+  #template = null;
 
-  static getCardElementByLinkChildElement(linkChildElement) {
-    const cardLinkElement = linkChildElement.closest('.film-card__link');
-    if(cardLinkElement) {
-      return cardLinkElement.parentElement;
-    }
-    return null;
+  constructor(film, comments) {
+    super();
+    this.#template = getFilmDetailsPopupTemplate(film, comments);
   }
 
   static get filmDetailsElement() {
     return document.querySelector('.film-details');
   }
 
-  get closeBtnElement() {
-    return this.element.querySelector('.film-details__close-btn');
+  get template() {
+    return this.#template;
   }
+
+  setCloseBtnClickHandler = (cb) => {
+    this._callback.closeBtnClick = cb;
+    this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#closeBtnClickHandler);
+  };
+
+  #closeBtnClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.closeBtnClick();
+  };
 }

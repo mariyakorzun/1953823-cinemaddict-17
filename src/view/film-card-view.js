@@ -1,4 +1,4 @@
-import BaseTemplateView from './base-template-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const MAX_DESCRIPTION_LENGTH = 139;
 
@@ -28,10 +28,21 @@ const createFilmCardTemplate = (film) => (
    </article>`
 );
 
-export default class FilmCardView extends BaseTemplateView {
+export default class FilmCardView extends AbstractView {
+  #template = null;
   #film = null;
   constructor(film) {
-    super(createFilmCardTemplate(film));
+    super();
+    this.#template = createFilmCardTemplate(film);
     this.#film = film;
+    this.element.dataset.id = film.id;
+  }
+
+  get template() {
+    return this.#template;
+  }
+
+  get id() {
+    return this.#film.id;
   }
 }
