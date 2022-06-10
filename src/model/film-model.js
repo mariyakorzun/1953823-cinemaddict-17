@@ -1,9 +1,9 @@
-import {generateFilm} from '../mock/film.js';
-import {generateRandomComments} from '../mock/comment.js';
+import { generateFilm } from '../mock/film.js';
+import { generateRandomComments } from '../mock/comments.js';
 
 export default class FilmModel {
 
-  #films = Array.from({ length: 22 }, (elem, i) => generateFilm(i.toString()));
+  #films = Array.from({ length: 22 }, (elem, i) => generateFilm(i));
   #commentsByFilmId = new Map();
 
   constructor() {
