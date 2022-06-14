@@ -33,12 +33,12 @@ const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(
   0, elements.length - 1
 )];
 
-function makeRandomArray() {
+function makeRandomArraySortNumber() {
   return Math.random() - 0.5;
 }
 
 const getRandomArrayElements = (elements, length) => [...elements]
-  .sort(makeRandomArray)
+  .sort(makeRandomArraySortNumber)
   .splice(0, length - 1);
 
 const listToMap = (list, keyGetter) => {
