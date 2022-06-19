@@ -38,7 +38,8 @@ const COMMENTS = [
   'In rutrum ac purus sit amet tempus.'
 ];
 
-const generateComment = (filmId) => ({
+const generateComment = (filmId, commentId) => ({
+  id: commentId,
   text: getRandomArrayElement(COMMENTS),
   emoji: getRandomArrayElement(EMOJIS),
   author: getRandomArrayElement(NAMES),
@@ -47,7 +48,7 @@ const generateComment = (filmId) => ({
 });
 
 const generateRandomComments = (count, filmId) => (
-  Array.from({length: count}, () => generateComment(filmId))
+  Array.from({ length: count }, (elem, i) => generateComment(filmId, i.toString()))
 );
 
 export { generateRandomComments };

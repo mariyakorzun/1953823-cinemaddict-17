@@ -6,6 +6,7 @@ import {
 } from '../utils/utils.js';
 
 import { humanizeFilmRuntime } from '../utils/film.js';
+import { generateRandomComments } from './comments';
 
 const FILM_TITLES = [
   'Made for each other',
@@ -111,7 +112,6 @@ export const generateFilm = (id) => {
       runtime: getRandomRuntime(),
       genres: new Set(getRandomGenres()),
       description: getRandomArrayElement(DESCRIPTIONS),
-      commentsCount: getRandomInteger(0, 20),
       director: NAMES[getRandomInteger(0, NAMES.length - 1)],
       writers: new Set(getRandomArrayElements(NAMES, 3)),
       actors: new Set(getRandomArrayElements(NAMES, 3)),
@@ -122,7 +122,8 @@ export const generateFilm = (id) => {
         alreadyWatched: Boolean(getRandomInteger(0, 1)),
         watchingDate: getRandomDateInRange(1941, 2022),
         favorite: Boolean(getRandomInteger(0, 1))
-      }
+      },
+      comments: generateRandomComments(getRandomInteger(0, 10), id)
     }
   );
 };
