@@ -1,4 +1,4 @@
-import AbstractView from '../abstract-view.js';
+import AbstractView from '../view/abstract-view.js';
 
 /**
  * Абстрактный класс представления с состоянием

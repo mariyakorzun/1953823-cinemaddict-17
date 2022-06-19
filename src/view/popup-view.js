@@ -1,8 +1,8 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {
   humanizeFilmReleaseDate,
   humanizeFilmCommentDate
-} from '../utils.js';
+} from '../utils/film.js';
 
 const getGenres = (film) => (
   Array.from(film.genres).map((genre) => `<span class="film-details__genre">${genre}</span>`).join('')
@@ -24,7 +24,19 @@ const getComments = (comments) => (
   </li>`
   ).join('')
 );
-const getFilmDetailsPopupTemplate = (film, comments) => (`
+
+const getNewCommentEmojiTemplate = (emoji) => {
+  if (!emoji) {
+    return '<div class="film-details__add-emoji-label"></div>';
+  }
+  return `
+     <div style="background-image: url('./images/emoji/${emoji}.png'); background-size: cover" class="film-details__add-emoji-label">
+       <input class="film-details__add-emoji-item visually-hidden" value="${emoji}">
+     </div>
+   `;
+};
+
+const getFilmDetailsPopupTemplate = ({film, comments, emoji}) => (`
   <section class="film-details">
     <form class="film-details__inner" action="" method="get">
       <div class="film-details__top-container">
@@ -84,9 +96,9 @@ const getFilmDetailsPopupTemplate = (film, comments) => (`
           </div>
         </div>
         <section class="film-details__controls">
-          <button type="button" class="film-details__control-button film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
-          <button type="button" class="film-details__control-button film-details__control-button--active film-details__control-button--watched" id="watched" name="watched">Already watched</button>
-          <button type="button" class="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
+         <button type="button" class="film-details__control-button ${film.userDetails.watchlist ? 'film-details__control-button--active' : ''} film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
+         <button type="button" class="film-details__control-button ${film.userDetails.alreadyWatched ? 'film-details__control-button--active' : ''} film-details__control-button--watched" id="watched" name="watched">Already watched</button>
+         <button type="button" class="film-details__control-button ${film.userDetails.favorite ? 'film-details__control-button--active' : ''} film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
         </section>
       </div>
       <div class="film-details__bottom-container">
@@ -96,7 +108,7 @@ const getFilmDetailsPopupTemplate = (film, comments) => (`
             ${getComments(comments)}
           </ul>
           <div class="film-details__new-comment">
-            <div class="film-details__add-emoji-label"></div>
+            ${getNewCommentEmojiTemplate(emoji)}
             <label class="film-details__comment-label">
               <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
             </label>
@@ -125,20 +137,37 @@ const getFilmDetailsPopupTemplate = (film, comments) => (`
   </section>
 `);
 
-export default class FilmDetailsPopupView extends AbstractView {
-  #template = null;
+export default class FilmDetailsPopupView extends AbstractStatefulView {
 
   constructor(film, comments) {
     super();
-    this.#template = getFilmDetailsPopupTemplate(film, comments);
+    this._state = this.#convertFilmToState(film, comments);
+    this.#addEmojiClickHandler();
   }
+
+  #convertFilmToState = (film, comments) => (
+    {film, comments}
+  );
+
+  #addEmojiClickHandler = () => {
+    this.element.querySelector('.film-details__emoji-list').addEventListener('click', this.#onEmojiClickEventHandler);
+  };
+
+  #onEmojiClickEventHandler = (evt) => {
+    if (evt.target.tagName === 'IMG') {
+      const inputElement = evt.target.parentElement.previousElementSibling;
+      this.updateElement({
+        ...this._state, scrollPosition: this.element.scrollTop, emoji: inputElement.value
+      });
+    }
+  };
 
   static get filmDetailsElement() {
     return document.querySelector('.film-details');
   }
 
   get template() {
-    return this.#template;
+    return getFilmDetailsPopupTemplate(this._state);
   }
 
   setCloseBtnClickHandler = (cb) => {
@@ -149,5 +178,51 @@ export default class FilmDetailsPopupView extends AbstractView {
   #closeBtnClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.closeBtnClick();
+  };
+
+  setAddToWatchlistBtnClickHandler = (cb) => {
+    this._callback.addToWatchlistBtnClick = cb;
+    const watchlistElement = this.element.querySelector('#watchlist');
+    watchlistElement.addEventListener(
+      'click',
+      (evt) => this.#controlItemClickHandler(evt, watchlistElement, cb)
+    );
+  };
+
+  setAddWatchedBtnClickHandler = (cb) => {
+    this._callback.addToWatchedBtnClick = cb;
+    const alreadyWatchedElement = this.element.querySelector('#watched');
+    alreadyWatchedElement.addEventListener(
+      'click',
+      (evt) => this.#controlItemClickHandler(evt, alreadyWatchedElement, cb)
+    );
+  };
+
+  setAddFavoriteBtnClickHandler = (cb) => {
+    this._callback.addToFavoriteBtnClick = cb;
+    const favoriteElement = this.element.querySelector('#favorite');
+    favoriteElement.addEventListener(
+      'click',
+      (evt) => this.#controlItemClickHandler(evt, favoriteElement, cb)
+    );
+  };
+
+  #controlItemClickHandler = (evt, targetButton, cb) => {
+    evt.preventDefault();
+    if (targetButton.classList.contains('film-details__control-button--active')) {
+      targetButton.classList.remove('film-details__control-button--active');
+    } else {
+      targetButton.classList.add('film-details__control-button--active');
+    }
+    cb();
+  };
+
+  _restoreHandlers = () => {
+    this.setCloseBtnClickHandler(this._callback.closeBtnClick);
+    this.setAddToWatchlistBtnClickHandler(this._callback.addToWatchlistBtnClick);
+    this.setAddWatchedBtnClickHandler(this._callback.addToWatchedBtnClick);
+    this.setAddFavoriteBtnClickHandler(this._callback.addToFavoriteBtnClick);
+    this.element.scrollTop = this._state.scrollPosition;
+    this.#addEmojiClickHandler();
   };
 }

@@ -1,10 +1,11 @@
 import {
   getRandomInteger,
-  getRandomDate,
-  humanizeFilmRuntime,
+  getRandomDateInRange,
   getRandomArrayElement,
   getRandomArrayElements,
-} from '../utils.js';
+} from '../utils/utils.js';
+
+import { humanizeFilmRuntime } from '../utils/film.js';
 
 const FILM_TITLES = [
   'Made for each other',
@@ -106,7 +107,7 @@ export const generateFilm = (id) => {
       originalTitle: filmTitle,
       poster: getRandomArrayElement(FILM_POSTERS),
       rating: `${getRandomInteger(1, 9)}.${getRandomInteger(1, 9)}`,
-      releaseDate: getRandomDate(1940, 2022),
+      releaseDate: getRandomDateInRange(1940, 2022),
       runtime: getRandomRuntime(),
       genres: new Set(getRandomGenres()),
       description: getRandomArrayElement(DESCRIPTIONS),
@@ -116,6 +117,12 @@ export const generateFilm = (id) => {
       actors: new Set(getRandomArrayElements(NAMES, 3)),
       country: getRandomArrayElement(COUNTRIES),
       ageRestriction: getRandomArrayElement(AGE_RESTRICTIONS),
+      userDetails: {
+        watchlist: Boolean(getRandomInteger(0, 1)),
+        alreadyWatched: Boolean(getRandomInteger(0, 1)),
+        watchingDate: getRandomDateInRange(1941, 2022),
+        favorite: Boolean(getRandomInteger(0, 1))
+      }
     }
   );
 };

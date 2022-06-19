@@ -3,7 +3,7 @@ import { generateRandomComments } from '../mock/comments.js';
 
 export default class FilmModel {
 
-  #films = Array.from({ length: 22 }, (elem, i) => generateFilm(i));
+  #films = Array.from({ length: 22 }, (elem, i) => generateFilm(i.toString()));
   #commentsByFilmId = new Map();
 
   constructor() {
@@ -16,6 +16,22 @@ export default class FilmModel {
 
   get films() {
     return this.#films;
+  }
+
+  get topRatedFilms() {
+    if (this.#films.filter((film) => film.rating > 0).length > 0) {
+      return this.#films.slice().sort((a, b) => b.rating - a.rating);
+    }
+    return [];
+  }
+
+  get mostCommentedFilms() {
+    if (this.#films.filter((film) => this.getCommentsByFilmId(film.id).length > 0).length > 0) {
+      return this.#films.slice().sort((a, b) => (
+        this.getCommentsByFilmId(b.id).length - this.getCommentsByFilmId(a.id).length
+      ));
+    }
+    return [];
   }
 
   getCommentsByFilmId(filmId) {

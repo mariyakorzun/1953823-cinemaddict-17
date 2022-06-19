@@ -1,7 +1,7 @@
 import {
-  getRandomDate,
+  getRandomDateInRange,
   getRandomArrayElement,
-} from '../utils.js';
+} from '../utils/utils.js';
 
 const EMOJIS = [
   'smile',
@@ -42,7 +42,7 @@ const generateComment = (filmId) => ({
   text: getRandomArrayElement(COMMENTS),
   emoji: getRandomArrayElement(EMOJIS),
   author: getRandomArrayElement(NAMES),
-  date: getRandomDate(2000, 2022),
+  date: getRandomDateInRange(2000, 2022),
   filmId
 });
 
