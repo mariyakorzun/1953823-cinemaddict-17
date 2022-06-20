@@ -17,12 +17,14 @@ import {
   RenderPosition,
   remove,
 } from '../framework/render.js';
+import LoadingView from '../view/loading-view.js';
 
 const FILMS_MAX_COUNT_AT_ONCE = 5;
 
 export default class FilmListPresenter {
   #filmListView = new FilmsListView();
   #showMoreBtnView = new ShowMoreBtnView();
+  #loadingComponent = new LoadingView();
   #sortView = new SortView();
   #renderedFilmsCount = 0;
   #filmModel = null;
@@ -73,6 +75,9 @@ export default class FilmListPresenter {
       this.#updateSingleFilm(data);
     } else if (updateType === UpdateType.MAJOR) {
       this.#updateFilmList();
+    } else if (updateType === UpdateType.INIT) {
+      remove(this.#loadingComponent);
+      this.#updateFilmList();
     }
   };
 
@@ -88,12 +93,20 @@ export default class FilmListPresenter {
     this.#filterPresenter.init();
   };
 
+  #renderLoading = () => {
+    render(this.#loadingComponent, this.#container);
+  };
+
   #updateFilmList = () => {
     this.#clearFilmCardList();
     this.#renderFilmCardList();
   };
 
   #renderFilmCardList() {
+    if (!this.#filmModel.isLoaded) {
+      this.#renderLoading();
+      return;
+    }
     render(this.#filmListView, this.#container);
     if (this.films.length > FILMS_MAX_COUNT_AT_ONCE) {
       this.#showMoreBtnView.setClickHandler(() => this.#onShowMoreBtnClick(this.films));
@@ -120,8 +133,13 @@ export default class FilmListPresenter {
   };
 
   #renderFilm = (film, container) => {
-    const filmPresenter = new FilmPresenter(container, this.#handleViewAction, this.#filterModel);
-    filmPresenter.init(film, this.#filmModel.getCommentsByFilmId(film.id));
+    const filmPresenter = new FilmPresenter(
+      container,
+      this.#handleViewAction,
+      this.#filterModel,
+      this.#filmModel
+    );
+    filmPresenter.init(film);
     this.#filmPresentersByFilmId.set(film.id, filmPresenter);
   };
 
