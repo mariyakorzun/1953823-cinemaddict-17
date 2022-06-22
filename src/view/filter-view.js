@@ -1,17 +1,53 @@
-import BaseTemplateView from './base-template-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
+import { listToMap } from '../utils/utils.js';
 
-const getFilterTemplate = () => (`
-   <nav class="main-navigation">
-     <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-     <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
-     <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">4</span></a>
-     <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
-   </nav>
+const getCountElement = (filter) => (
+  filter.count >= 0 ? `<span class="main-navigation__item-count">${filter.count}</span>` : ''
+);
+
+const createFilterItemTemplate = (filter, isActive) => (`
+  <a href="${filter.type.VALUE}" class="main-navigation__item ${isActive ? 'main-navigation__item--active' : ''}">
+     ${filter.type.TEXT}
+     ${getCountElement(filter)}
+   </a>
  `);
 
-export default class FilterView extends BaseTemplateView {
+const getFilterTemplate = (filterItems, filterValue) => {
+  const filterItemsTemplate = filterItems
+    .map((filter) => createFilterItemTemplate(filter, filter.type.VALUE === filterValue))
+    .join('');
+  return `<nav class="main-navigation">
+     ${filterItemsTemplate}
+   </nav>`;
+};
 
-  constructor() {
-    super(getFilterTemplate());
+export default class FilterView extends AbstractView {
+
+  #filters = null;
+  #currentFilter = null;
+  #filterByValue = null;
+
+  constructor(filters, currentFilter) {
+    super();
+    this.#filters = filters;
+    this.#currentFilter = currentFilter;
+    this.#filterByValue = listToMap(filters, (filter) => filter.type.VALUE);
   }
+
+  get template() {
+    return getFilterTemplate(this.#filters, this.#currentFilter.VALUE);
+  }
+
+  setFilterTypeChangeHandler = (cb) => {
+    this._callback.filterTypeChange = cb;
+    document.body.querySelector('.main-navigation').addEventListener('click', this.#onFilterClickHandler);
+  };
+
+  #onFilterClickHandler = (evt) => {
+    if (evt.target.tagName !== 'A') {
+      return;
+    }
+    evt.preventDefault();
+    this._callback.filterTypeChange(this.#filterByValue.get(evt.target.getAttribute('href')).type);
+  };
 }
