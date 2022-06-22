@@ -3,7 +3,8 @@ import ApiService from './framework/api-service.js';
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
-  DELETE: 'DELETE'
+  DELETE: 'DELETE',
+  POST: 'POST',
 };
 
 export default class FilmApiService extends ApiService {
@@ -57,4 +58,27 @@ export default class FilmApiService extends ApiService {
     this._load({url: `comments/${filmId}`})
       .then(ApiService.parseResponse)
   );
+
+
+  addComment = async (comment, movieId) => {
+    const response = await this._load({
+      url: `comments/${movieId}`,
+      method: Method.POST,
+      body: JSON.stringify(comment),
+      headers: new Headers({'Content-Type': 'application/json'}),
+    });
+
+    const parsedResponse = await ApiService.parseResponse(response);
+
+    return parsedResponse;
+  };
+
+  deleteComment = async (id) => {
+    const response = await this._load({
+      url: `comments/${id}`,
+      method: Method.DELETE,
+    });
+
+    return response;
+  };
 }
