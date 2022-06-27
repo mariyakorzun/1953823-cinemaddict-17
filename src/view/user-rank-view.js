@@ -30,6 +30,7 @@ const getUserRankTemplate = (watchedFilmsCount, isLoaded) => (`
 export default class UserRankView extends AbstractStatefulView {
 
   #isModelLoaded = false;
+
   #watchedFilmsCount = null;
 
   constructor(watchedFilmsCount, isModelLoaded) {
