@@ -1,6 +1,6 @@
 import {render, replace} from '../framework/render.js';
-import { UpdateType } from '../const';
-import FooterStatisticsView from '../view/footer-statistics-view';
+import { UpdateType } from '../const.js';
+import FooterStatisticsView from '../view/footer-statistics-view.js';
 
 export default class FooterPresenter {
 

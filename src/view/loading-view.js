@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
 const createNoFilmsTemplate = () => (`
    <section class="films">
@@ -10,7 +10,7 @@ const createNoFilmsTemplate = () => (`
    </section>
  `);
 
-export default class LoadingView extends AbstractView {
+export default class LoadingView extends AbstractStatefulView {
 
   get template() {
     return createNoFilmsTemplate();

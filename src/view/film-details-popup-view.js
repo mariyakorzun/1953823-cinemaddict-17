@@ -191,7 +191,7 @@ export default class FilmDetailsPopupView extends AbstractStatefulView {
 
   #closeBtnClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.closeBtnClick();
+    this._callback.closeBtnClick(this._state);
   };
 
   setAddToWatchlistBtnClickHandler = (cb) => {

@@ -110,18 +110,18 @@ export default class FilmPresenter {
   };
 
   #addCommentClick = (comment) => {
-    this.#changeDataCallback(UserAction.ADD_COMMENT, UpdateType.PATCH, comment);
+    this.#changeDataCallback(UserAction.ADD_COMMENT, UpdateType.MINOR, comment);
   };
 
   #deleteCommentClick = (comment) => {
-    this.#changeDataCallback(UserAction.DELETE_COMMENT, UpdateType.PATCH, comment);
+    this.#changeDataCallback(UserAction.DELETE_COMMENT, UpdateType.MINOR, comment);
   };
 
   #changeFilmData = (changeFilmCallback) => {
     const filmClone = structuredClone(this.#film);
     changeFilmCallback(filmClone);
     this.#film = filmClone;
-    this.#changeDataCallback(UserAction.UPDATE_FILM, UpdateType.PATCH, filmClone);
+    this.#changeDataCallback(UserAction.UPDATE_FILM, UpdateType.MINOR, filmClone);
   };
 
   destroy() {

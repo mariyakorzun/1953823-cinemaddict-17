@@ -1,8 +1,8 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
 const getFooterStatisticsTemplate = (filmsCount) => `<p>${filmsCount} movies inside</p>`;
 
-export default class FooterStatisticsView extends AbstractView {
+export default class FooterStatisticsView extends AbstractStatefulView {
 
   #filmsCount = null;
   #template = null;

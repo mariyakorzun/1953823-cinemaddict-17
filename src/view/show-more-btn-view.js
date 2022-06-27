@@ -1,8 +1,8 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
 const showMoreBtnTemplate = '<button class="films-list__show-more">Show more</button>';
 
-export default class ShowMoreBtnView extends AbstractView {
+export default class ShowMoreBtnView extends AbstractStatefulView {
 
   get template() {
     return showMoreBtnTemplate;

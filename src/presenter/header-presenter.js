@@ -1,4 +1,4 @@
-import UserRankView from '../view/user-rank-view';
+import UserRankView from '../view/user-rank-view.js';
 import {
   render,
   replace,

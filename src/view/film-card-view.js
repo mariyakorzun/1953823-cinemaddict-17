@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizeFilmRuntime } from '../utils/film.js';
 
 const MAX_DESCRIPTION_LENGTH = 139;
@@ -33,7 +33,7 @@ const createFilmCardTemplate = (film) => (
    </article>`
 );
 
-export default class FilmCardView extends AbstractView {
+export default class FilmCardView extends AbstractStatefulView {
   #template = null;
   #film = null;
   constructor(film) {

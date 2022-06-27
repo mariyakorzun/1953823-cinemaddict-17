@@ -1,14 +1,20 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { UserRank } from '../const.js';
 
+const MIN_FILMS_AMOUNT_WATCHED_BY_NOVISE = 1;
+const MAX_FILMS_AMOUNT_WATCHED_BY_NOVISE = 10;
+const MIN_FILMS_AMOUNT_WATCHED_BY_FAN = 11;
+const MAX_FILMS_AMOUNT_WATCHED_BY_FAN = 20;
+const MIN_FILMS_AMOUNT_WATCHED_BY_BUFF = 11;
+
 const getUserRank = (watchedFilmsCount) => {
-  if (watchedFilmsCount >= 1 && watchedFilmsCount <= 10) {
+  if (watchedFilmsCount >= MIN_FILMS_AMOUNT_WATCHED_BY_NOVISE && watchedFilmsCount <= MAX_FILMS_AMOUNT_WATCHED_BY_NOVISE) {
     return UserRank.NOVICE;
   }
-  if (watchedFilmsCount >= 11 && watchedFilmsCount <= 20) {
+  if (watchedFilmsCount >= MIN_FILMS_AMOUNT_WATCHED_BY_FAN && watchedFilmsCount <= MAX_FILMS_AMOUNT_WATCHED_BY_FAN) {
     return UserRank.FAN;
   }
-  if (watchedFilmsCount >= 21) {
+  if (watchedFilmsCount >= MIN_FILMS_AMOUNT_WATCHED_BY_BUFF) {
     return UserRank.MOVIE_BUFF;
   }
   return UserRank.NONE;
@@ -21,7 +27,7 @@ const getUserRankTemplate = (watchedFilmsCount, isLoaded) => (`
    </section>
  `);
 
-export default class UserRankView extends AbstractView {
+export default class UserRankView extends AbstractStatefulView {
 
   #isModelLoaded = false;
   #watchedFilmsCount = null;

@@ -1,6 +1,6 @@
-import FilmsListView from '../view/films-list-view.js';
+import FilmsListView from '../view/film-list-view.js';
 import SortView from '../view/sort-view.js';
-import ShowMoreBtnView from '../view/show-more-button-view.js';
+import ShowMoreBtnView from '../view/show-more-btn-view.js';
 import FilmPresenter from './film-presenter.js';
 import {
   SortType,

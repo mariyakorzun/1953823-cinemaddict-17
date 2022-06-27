@@ -1,5 +1,5 @@
 import { SortType } from '../const.js';
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
 const activeElementClass = 'sort__button--active';
 
@@ -11,7 +11,7 @@ const getSortTemplate = () => (`
    </ul>
  `);
 
-export default class SortView extends AbstractView {
+export default class SortView extends AbstractStatefulView {
 
   get template() {
     return getSortTemplate();

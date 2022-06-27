@@ -1,4 +1,4 @@
-import FilmDetailsPopupView from '../view/popup-view.js';
+import FilmDetailsPopupView from '../view/film-details-popup-view.js';
 import {
   isEscapeKey,
   isCtrlEnterKey,
